@@ -56,17 +56,18 @@ def dashboard(request):
         df['date'] = pd.to_datetime(df['date'])
 
         weekly = df.groupby(pd.Grouper(key='date', freq='W'))['distance_km'].sum().reset_index()
-        weekly.columns = ['Week', 'Km']
-        fig1 = px.bar(weekly, x='Week', y='Km', title='Weekly volume (km)')
+        weekly.columns = ['Неделя', 'Километраж']
+        fig1 = px.bar(weekly, x='Неделя', y='Километраж', title='Недельный объём (км)')
         chart_weekly = fig1.to_html(full_html=False, include_plotlyjs='cdn')
 
         df_sorted = df.sort_values('date')
-        fig2 = px.line(df_sorted, x='date', y='pace_min_per_km', title='Pace trend (min/km)', markers=True)
+        fig2 = px.line(df_sorted, x='date', y='pace_min_per_km', title='Динамика темпа (мин/км)', markers=True)
+        fig2.update_layout(xaxis_title='Дата', yaxis_title='Темп (мин/км)')
         chart_pace = fig2.to_html(full_html=False, include_plotlyjs=False)
 
         zones = df['pulse_zone'].value_counts().reset_index()
-        zones.columns = ['Zone', 'Count']
-        fig3 = px.pie(zones, names='Zone', values='Count', title='Pulse zones distribution')
+        zones.columns = ['Зона', 'Количество']
+        fig3 = px.pie(zones, names='Зона', values='Количество', title='Распределение по пульсовым зонам')
         chart_zones = fig3.to_html(full_html=False, include_plotlyjs=False)
 
         stats = df.groupby('workout_type').agg(
@@ -75,7 +76,7 @@ def dashboard(request):
             avg_pace=('pace_min_per_km', 'mean'),
             avg_hr=('avg_heart_rate', 'mean'),
         ).round(2).reset_index()
-        stats.columns = ['Type', 'Count', 'Total km', 'Avg pace', 'Avg HR']
+        stats.columns = ['Тип', 'Кол-во', 'Всего км', 'Средний темп', 'Средний пульс']
         stats_table = stats.to_html(classes='table table-striped', index=False)
 
     return render(request, 'diary/dashboard.html', {

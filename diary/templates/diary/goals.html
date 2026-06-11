@@ -1,0 +1,36 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+<h2>Мои цели</h2>
+<a href="{% url 'goal_add' %}" class="btn btn-primary mb-3">+ Добавить цель</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Дистанция</th>
+            <th>Целевая дата</th>
+            <th>Целевой темп</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for g in goals_list %}
+        <tr>
+            <td>{{ g.title }}</td>
+            <td>{{ g.target_distance_km }} км</td>
+            <td>{{ g.target_date }}</td>
+            <td>{{ g.target_pace_min_per_km }} мин/км</td>
+            <td>
+                {% if g.is_active %}
+                    <span class="badge bg-success">Активная</span>
+                {% else %}
+                    <span class="badge bg-secondary">Архив</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Целей пока нет</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

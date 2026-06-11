@@ -1,0 +1,8 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+<h1>RunDiary</h1>
+<p>Дневник тренировок для бегунов-любителей с расчётом пульсовых зон и анализом динамики формы.</p>
+{% if not user.is_authenticated %}
+    <a href="{% url 'register' %}" class="btn btn-primary">Начать</a>
+{% endif %}
+{% endblock %}

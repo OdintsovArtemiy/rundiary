@@ -1,0 +1,39 @@
+{% extends 'diary/base.html' %}
+{% block content %}
+<h2>Мой дневник</h2>
+<p>Профиль: год рождения {{ athlete.birth_year }}, max ЧСС {{ athlete.max_hr }}</p>
+
+{% if chart_weekly %}
+<h3 class="mt-4">Аналитика</h3>
+<div class="my-3">{{ chart_weekly|safe }}</div>
+<div class="my-3">{{ chart_pace|safe }}</div>
+<div class="my-3">{{ chart_zones|safe }}</div>
+
+<h4 class="mt-4">Статистика по типам тренировок</h4>
+<div class="my-3">{{ stats_table|safe }}</div>
+{% else %}
+<div class="alert alert-info">Добавь первую тренировку, чтобы увидеть аналитику.</div>
+{% endif %}
+
+<h3 class="mt-4">Все тренировки</h3>
+<table class="table">
+    <thead>
+        <tr><th>Дата</th><th>Тип</th><th>Дистанция</th><th>Время</th><th>Темп</th><th>Пульс</th><th>Зона</th></tr>
+    </thead>
+    <tbody>
+        {% for w in workouts %}
+        <tr>
+            <td>{{ w.date }}</td>
+            <td>{{ w.get_workout_type_display }}</td>
+            <td>{{ w.distance_km }} км</td>
+            <td>{{ w.duration_minutes }} мин</td>
+            <td>{{ w.pace }}/км</td>
+            <td>{{ w.avg_heart_rate }}</td>
+            <td>{{ w.pulse_zone }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">Тренировок пока нет</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

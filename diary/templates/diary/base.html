@@ -13,6 +13,7 @@
             {% if user.is_authenticated %}
                 <a class="text-white me-3" href="{% url 'dashboard' %}">Дневник</a>
                 <a class="text-white me-3" href="{% url 'workout_add' %}">+ Тренировка</a>
+                <a class="text-white me-3" href="{% url 'goals' %}">Цели</a>
                 <a class="text-white" href="{% url 'logout' %}">Выйти ({{ user.username }})</a>
             {% else %}
                 <a class="text-white me-3" href="{% url 'login' %}">Войти</a>
