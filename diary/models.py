@@ -3,12 +3,12 @@ from django.contrib.auth.models import User
 
 
 class Athlete(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='athlete')
-    birth_year = models.PositiveIntegerField()
-    resting_hr = models.PositiveIntegerField()
-    max_hr = models.PositiveIntegerField()
-    weight = models.PositiveIntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='athlete', verbose_name='Пользователь')
+    birth_year = models.PositiveIntegerField(verbose_name='Год рождения')
+    resting_hr = models.PositiveIntegerField(verbose_name='Пульс покоя')
+    max_hr = models.PositiveIntegerField(verbose_name='Максимальный пульс')
+    weight = models.PositiveIntegerField(verbose_name='Вес (кг)')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     class Meta:
         verbose_name = 'Атлет'
@@ -19,13 +19,13 @@ class Athlete(models.Model):
 
 
 class TrainingGoal(models.Model):
-    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='goals')
-    title = models.CharField(max_length=200)
-    target_distance_km = models.DecimalField(max_digits=5, decimal_places=2)
-    target_date = models.DateField()
-    target_pace_min_per_km = models.DecimalField(max_digits=4, decimal_places=2)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='goals', verbose_name='Атлет')
+    title = models.CharField(max_length=200, verbose_name='Название')
+    target_distance_km = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Целевая дистанция (км)')
+    target_date = models.DateField(verbose_name='Целевая дата')
+    target_pace_min_per_km = models.DecimalField(max_digits=4, decimal_places=2, verbose_name='Целевой темп (мин/км)')
+    is_active = models.BooleanField(default=True, verbose_name='Активная')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     class Meta:
         verbose_name = 'Цель тренировок'
@@ -44,15 +44,15 @@ class Workout(models.Model):
         ('recovery', 'Восстановительная'),
     ]
 
-    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='workouts')
-    goal = models.ForeignKey(TrainingGoal, on_delete=models.SET_NULL, null=True, blank=True, related_name='workouts')
-    date = models.DateField()
-    distance_km = models.DecimalField(max_digits=5, decimal_places=2)
-    duration_minutes = models.PositiveIntegerField()
-    avg_heart_rate = models.PositiveIntegerField()
-    workout_type = models.CharField(max_length=20, choices=WORKOUT_TYPES)
-    notes = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE, related_name='workouts', verbose_name='Атлет')
+    goal = models.ForeignKey(TrainingGoal, on_delete=models.SET_NULL, null=True, blank=True, related_name='workouts', verbose_name='Цель')
+    date = models.DateField(verbose_name='Дата')
+    distance_km = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Дистанция (км)')
+    duration_minutes = models.PositiveIntegerField(verbose_name='Время (минуты)')
+    avg_heart_rate = models.PositiveIntegerField(verbose_name='Средний пульс')
+    workout_type = models.CharField(max_length=20, choices=WORKOUT_TYPES, verbose_name='Тип тренировки')
+    notes = models.TextField(blank=True, verbose_name='Заметки')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     class Meta:
         ordering = ['-date']
