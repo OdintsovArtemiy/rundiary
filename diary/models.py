@@ -10,6 +10,10 @@ class Athlete(models.Model):
     weight = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'Атлет'
+        verbose_name_plural = 'Атлеты'
+
     def __str__(self):
         return f"Athlete {self.user.username}"
 
@@ -22,6 +26,10 @@ class TrainingGoal(models.Model):
     target_pace_min_per_km = models.DecimalField(max_digits=4, decimal_places=2)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Цель тренировок'
+        verbose_name_plural = 'Цели тренировок'
 
     def __str__(self):
         return self.title
@@ -48,6 +56,8 @@ class Workout(models.Model):
 
     class Meta:
         ordering = ['-date']
+        verbose_name = 'Тренировка'
+        verbose_name_plural = 'Тренировки'
 
     def __str__(self):
         return f"{self.date} - {self.distance_km} km"
