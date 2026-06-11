@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Workout, Athlete
+from .models import Workout, Athlete, TrainingGoal
 
 
 class RegisterForm(UserCreationForm):
@@ -19,10 +19,19 @@ class RegisterForm(UserCreationForm):
         self.fields['password1'].label = 'Пароль'
         self.fields['password2'].label = 'Подтверждение пароля'
 
+
 class WorkoutForm(forms.ModelForm):
     class Meta:
         model = Workout
         fields = ('date', 'distance_km', 'duration_minutes', 'avg_heart_rate', 'workout_type', 'notes')
+        labels = {
+            'date': 'Дата',
+            'distance_km': 'Дистанция (км)',
+            'duration_minutes': 'Время (минуты)',
+            'avg_heart_rate': 'Средний пульс',
+            'workout_type': 'Тип тренировки',
+            'notes': 'Заметки',
+        }
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'notes': forms.Textarea(attrs={'rows': 3}),
@@ -39,3 +48,19 @@ class WorkoutForm(forms.ModelForm):
         if hr < 40 or hr > 220:
             raise forms.ValidationError('Пульс должен быть от 40 до 220')
         return hr
+
+
+class TrainingGoalForm(forms.ModelForm):
+    class Meta:
+        model = TrainingGoal
+        fields = ('title', 'target_distance_km', 'target_date', 'target_pace_min_per_km', 'is_active')
+        labels = {
+            'title': 'Название цели',
+            'target_distance_km': 'Целевая дистанция (км)',
+            'target_date': 'Целевая дата',
+            'target_pace_min_per_km': 'Целевой темп (мин/км)',
+            'is_active': 'Активная цель',
+        }
+        widgets = {
+            'target_date': forms.DateInput(attrs={'type': 'date'}),
+        }
